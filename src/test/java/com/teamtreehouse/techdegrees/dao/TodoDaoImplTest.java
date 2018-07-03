@@ -30,13 +30,13 @@ public class TodoDaoImplTest {
   }
 
   private Todo newTestTodo() {
-    return new Todo("Test");
+    return new Todo("Test", false);
   }
 
   @Test
   public void addingTodoSetsId() throws Exception{
     Todo todo = newTestTodo();
-    int originalTodoId = todo.getId();
+    Long originalTodoId = todo.getId();
 
     dao.add(todo);
 
@@ -90,6 +90,8 @@ public class TodoDaoImplTest {
     Todo todo = newTestTodo();
     dao.add(todo);
     Todo foundTodo = dao.findById(todo.getId());
+    System.out.println(foundTodo);
+    System.out.println(todo);
     assertEquals(todo, foundTodo);
   }
 }

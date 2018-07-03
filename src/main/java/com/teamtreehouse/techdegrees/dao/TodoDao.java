@@ -11,9 +11,9 @@ public interface TodoDao {
 
   List<Todo> findAll() throws DaoException;
 
-  Todo findById (int id) throws DaoException;
+  Todo findById (Long id) throws DaoException;
 
   void update(Todo todo) throws DaoException;
 
-  void delete (int id) throws DaoException;
+  void delete (Long id) throws DaoException;
 }

@@ -1,14 +1,22 @@
 package com.teamtreehouse.techdegrees.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 public class Todo {
 
-  private int id;
+  private Long id;
+
+  @SerializedName("name")
   private String name;
 
-  public Todo (String name) {
+  @SerializedName("completed")
+  private boolean isCompleted;
+
+  public Todo (String name, boolean isCompleted) {
     this.name = name;
+    this.isCompleted = isCompleted;
   }
 
   public String getName() {
@@ -19,11 +27,11 @@ public class Todo {
     this.name = name;
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -31,6 +39,7 @@ public class Todo {
   public String toString() {
     return "Todo{" +
         "name='" + name + '\'' +
+        ", completed=" + isCompleted +
         '}';
   }
 
@@ -50,5 +59,13 @@ public class Todo {
   @Override
   public int hashCode() {
     return Objects.hash(id, name);
+  }
+
+  public Boolean isCompleted() {
+    return isCompleted;
+  }
+
+  public void setCompleted(boolean completed) {
+    isCompleted = completed;
   }
 }

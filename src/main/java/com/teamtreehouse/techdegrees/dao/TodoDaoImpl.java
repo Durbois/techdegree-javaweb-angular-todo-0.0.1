@@ -20,10 +20,11 @@ public class TodoDaoImpl implements TodoDao {
 
   @Override
   public void add(Todo todo) throws DaoException {
-    String sql = "INSERT INTO todos(name) VALUES (:name)";
+    String sql = "INSERT INTO todo(name, is_completed) VALUES (:name, :is_completed)";
     try(Connection con = sql2o.open()){
-      int id = (int)con.createQuery(sql)
-          .bind(todo)
+      Long id = (Long)con.createQuery(sql)
+          .addParameter("name", todo.getName())
+          .addParameter("is_completed", todo.isCompleted())
           .executeUpdate()
           .getKey();
 
@@ -35,20 +36,21 @@ public class TodoDaoImpl implements TodoDao {
 
   @Override
   public void update(Todo todo) throws DaoException {
-    String sql = "UPDATE todos SET name = :name WHERE id = :id";
+    String sql = "UPDATE todo SET name = :name, is_completed = :is_completed WHERE id = :id";
     try(Connection con = sql2o.open()){
       con.createQuery(sql)
           .addParameter("name", todo.getName())
+          .addParameter("is_completed", todo.isCompleted())
           .addParameter("id", todo.getId())
           .executeUpdate();
     }catch(Sql2oException ex){
       throw new DaoException(ex, "Problem updating todo");
     }
   }
-
+  
   @Override
-  public void delete (int id) throws DaoException {
-    String sql = "DELETE from todos WHERE id = :id";
+  public void delete (Long id) throws DaoException {
+    String sql = "DELETE from todo WHERE id = :id";
     try(Connection con = sql2o.open()){
       con.createQuery(sql)
           .addParameter("id", id)
@@ -62,8 +64,9 @@ public class TodoDaoImpl implements TodoDao {
   @Override
   public List<Todo> findAll() throws DaoException {
     try(Connection con = sql2o.open()){
-      String sql = "SELECT * FROM todos";
+      String sql = "SELECT * FROM todo";
       return con.createQuery(sql)
+          .addColumnMapping("is_completed", "isCompleted")
           .executeAndFetch(Todo.class);
     }catch(Sql2oException ex){
       throw new DaoException(ex, "Problem finding all todos");
@@ -71,10 +74,11 @@ public class TodoDaoImpl implements TodoDao {
   }
 
   @Override
-  public Todo findById(int id) throws DaoException {
+  public Todo findById(Long id) throws DaoException {
     try(Connection con = sql2o.open()){
-      String sql = "SELECT * FROM todos WHERE id = :id";
+      String sql = "SELECT * FROM todo WHERE id = :id";
       return con.createQuery(sql)
+          .addColumnMapping("is_completed", "isCompleted")
           .addParameter("id", id)
           .executeAndFetchFirst(Todo.class);
     }catch(Sql2oException ex){

@@ -45,8 +45,11 @@ public class App {
 
         get("/api/v1/todos", (req, res) -> todoDao.findAll(), gson::toJson);
 
-        post("/api/v1/todos", (req, res) -> {
+        post("/api/v1/todos", "application/json", (req, res) -> {
             Todo todo = gson.fromJson(req.body(), Todo.class);
+
+            System.out.println("TODO: " + todo);
+
             todoDao.add(todo);
             res.status(201);
             return todo;
@@ -54,7 +57,7 @@ public class App {
 
         // TODO: continue
         put("/api/v1/todos/:id", "application/json", (req, res) -> {
-            int id = Integer.parseInt(req.params("id"));
+            Long id = Long.parseLong(req.params("id"));
 
             Todo todo = gson.fromJson(req.body(), Todo.class);
             todo.setId(id);
@@ -66,12 +69,12 @@ public class App {
         }, gson::toJson);
 
         delete("/api/v1/todos/:id", "application/json", (req, res) -> {
-            int id = Integer.parseInt(req.params("id"));
+            Long id = Long.parseLong(req.params("id"));
 
             todoDao.delete(id);
 
             res.status(201);
-            return null;
+            return "";
         }, gson::toJson);
 
         exception(ApiError.class, (exc, req, res) -> {

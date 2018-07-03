@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS todos (
-    id int PRIMARY KEY auto_increment,
-    name VARCHAR
+CREATE TABLE IF NOT EXISTS todo (
+    id BIGINT PRIMARY KEY auto_increment,
+    name VARCHAR,
+    is_completed BOOLEAN
 );

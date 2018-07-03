@@ -77,6 +77,8 @@ public class ApiTest {
   public void addingTodoReturnsCreatedStatus() throws Exception {
     Map<String, String> values = new HashMap<>();
     values.put("name", "Todo");
+    values.put("completed", "true");
+    values.put("edited", "true");
 
     ApiResponse res = client.request("POST", "/api/v1/todos", gson.toJson(values));
     assertEquals(201, res.getStatus());
@@ -90,6 +92,7 @@ public class ApiTest {
 
     Map<String, String> values = new HashMap<>();
     values.put("name", todo.getName());
+    values.put("completed", todo.isCompleted().toString());
 
     ApiResponse res = client.request("PUT", "/api/v1/todos/"+todo.getId(), gson.toJson(values));
     assertEquals(201, res.getStatus());
@@ -106,7 +109,7 @@ public class ApiTest {
   }
 
   private Todo newTestTodo(String name) {
-    return new Todo(name);
+    return new Todo(name, true);
   }
 
 
